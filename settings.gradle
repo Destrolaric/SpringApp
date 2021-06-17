@@ -1,0 +1,8 @@
+rootProject.name = 'taxi'
+
+include 'eurekaServer'
+include 'gatewayClient'
+
+include 'carService'
+include 'tripService'
+include 'userService'

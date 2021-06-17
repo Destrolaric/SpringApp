@@ -1,0 +1,21 @@
+server:
+  port: 10869 # пусть будет не рандомный, чтобы в постмане каждый раз не менять порт
+
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      routes:
+        - id: userService
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user/**
+        - id: tripService
+          uri: lb://TRIP-SERVICE
+          predicates:
+            - Path=/trip/**
+        - id: carService
+          uri: lb://CAR-SERVICE
+          predicates:
+            - Path=/car/**
