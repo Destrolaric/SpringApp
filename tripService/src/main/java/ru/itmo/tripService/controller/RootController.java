@@ -2,7 +2,7 @@ package ru.itmo.tripService.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.itmo.tripService.model.Car;
+import ru.itmo.carService.model.Car;
 import ru.itmo.tripService.model.Trip;
 import ru.itmo.tripService.model.TripStatus;
 import ru.itmo.tripService.model.User;

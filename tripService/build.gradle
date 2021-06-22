@@ -5,6 +5,8 @@ dependencies {
 	runtimeOnly 'org.postgresql:postgresql'
 	implementation 'io.springfox:springfox-boot-starter:3.0.0'
 	compile 'io.springfox:springfox-swagger-ui:3.0.0'
+
+	compile project(':carService')
 }
 
 bootJar {

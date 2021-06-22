@@ -1,4 +1,4 @@
-package ru.itmo.tripService.model;
+package ru.itmo.carService.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-// временный класс, пока такой же не будет заимплеменчен в соответствующем сервисе
 @Data
 @AllArgsConstructor
 @Entity
@@ -27,11 +26,11 @@ public class Car {
     @NotBlank
     private String status;
 
-    @Column(name = "longitude", nullable = false)
-    @NotNull
-    private Double longitude;
-
     @Column(name = "latitude", nullable = false)
     @NotNull
     private Double latitude;
+
+    @Column(name = "longitude", nullable = false)
+    @NotNull
+    private Double longitude;
 }
