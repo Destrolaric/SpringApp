@@ -2,7 +2,8 @@ package ru.itmo.tripService.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.itmo.carService.model.Car;
+import ru.itmo.tripService.client.CarFeignClient;
+import ru.itmo.tripService.model.Car;
 import ru.itmo.tripService.model.Trip;
 import ru.itmo.tripService.model.TripStatus;
 import ru.itmo.tripService.model.User;
@@ -15,6 +16,9 @@ public class RootController {
     @Autowired
     CrudTripRepository repository;
 
+    @Autowired
+    CarFeignClient carClient;
+
     @GetMapping("/pickup")
     public Trip pickUp(@RequestParam Double start_lat,
                        @RequestParam Double start_long,
@@ -22,7 +26,7 @@ public class RootController {
                        @RequestParam Double finish_long) {
 
         User user = new User(1, "123", "123", "123");
-        Car car = new Car(1, "123", "123", 100.1, 300.2);
+        Car car = carClient.findNearestCar(start_lat, start_long);
         Trip trip = new Trip(null, user, car, TripStatus.WAITING,
                 start_lat, start_long, finish_lat, finish_long);
 

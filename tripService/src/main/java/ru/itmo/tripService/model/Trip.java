@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import ru.itmo.carService.model.Car;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
