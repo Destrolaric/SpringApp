@@ -35,7 +35,10 @@ public class RootController {
     }
 
     @PostMapping("/interrupt")
-    public Integer interrupt(@RequestParam Integer id) {
-        return id;
+    public void interrupt(@RequestParam Integer id) {
+        Trip trip = repository.getById(id);
+        trip.setStatus(TripStatus.FINISHED);
+        //TODO: request to carService to change car status
+        repository.save(trip);
     }
 }
