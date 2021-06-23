@@ -1,4 +1,4 @@
-package ru.itmo.userService;
+package ru.itmo.userService.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

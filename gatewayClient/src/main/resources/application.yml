@@ -1,5 +1,5 @@
 server:
-  port: 10869 # пусть будет не рандомный, чтобы в постмане каждый раз не менять порт
+  port: 8080 # пусть будет не рандомный, чтобы в постмане каждый раз не менять порт
 
 spring:
   application:
@@ -10,7 +10,7 @@ spring:
         - id: userService
           uri: lb://USER-SERVICE
           predicates:
-            - Path=/user/**
+            - Path=/api/v1/user/**
         - id: tripService
           uri: lb://TRIP-SERVICE
           predicates:
