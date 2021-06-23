@@ -17,7 +17,7 @@ public enum Role {
     private final List<Authority> authorities;
 
     public List<SimpleGrantedAuthority> getAuthorities() {
-        return getAuthorities().stream()
+        return authorities.stream()
                 .map(authority -> new SimpleGrantedAuthority(authority.getAuthority()))
                 .collect(Collectors.toList());
     }
