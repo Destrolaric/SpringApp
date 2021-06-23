@@ -24,6 +24,9 @@ public class Car {
     @NotBlank
     private String name;
 
+    @Column(name = "license_plate", nullable = false)
+    @NotBlank
+    private String license_plate;
     @Column(name = "status", nullable = false)
     @NotBlank
     private String status;

@@ -18,7 +18,6 @@ public class RootController {
     @GetMapping("/findNearest")
     public Car findNearest(@RequestParam Double latitude,
                            @RequestParam Double longitude) {
-
         return service.findNearestCar(latitude, longitude);
     }
 }

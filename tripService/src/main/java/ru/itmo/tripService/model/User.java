@@ -24,6 +24,10 @@ public class User {
     @NotBlank
     private String name;
 
+    @Column(name = "surname", nullable = false)
+    @NotBlank
+    private String surname;
+
     @Column(name = "email", nullable = false)
     @NotBlank
     private String email;
