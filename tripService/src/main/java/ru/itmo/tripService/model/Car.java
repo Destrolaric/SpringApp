@@ -23,6 +23,12 @@ public class Car {
     @Column(name = "name", nullable = false)
     @NotBlank
     private String name;
+    @Column(name = "surname", nullable = false)
+    @NotBlank
+    private String surname;
+    @Column(name ="plate_number", nullable = false)
+    @NotBlank
+    private String plate_number;
 
     @Column(name = "status", nullable = false)
     @NotBlank

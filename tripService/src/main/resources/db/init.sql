@@ -20,6 +20,7 @@ CREATE TABLE users
 (
     id        INTEGER    PRIMARY KEY DEFAULT nextval('global_seq'),
     name      VARCHAR    NOT NULL,
+    surname VARCHAR  NOT NULL,
     email     VARCHAR    NOT NULL,
     password  VARCHAR    NOT NULL
 );
@@ -30,6 +31,8 @@ CREATE TABLE cars
 (
     id         INTEGER    PRIMARY KEY DEFAULT nextval('global_seq'),
     name       VARCHAR    NOT NULL,
+    surname VARCHAR  NOT NULL,
+    plate_number  VARCHAR NOT NULL,
     status     VARCHAR    NOT NULL,
     latitude   FLOAT      NOT NULL,
     longitude  FLOAT      NOT NULL
