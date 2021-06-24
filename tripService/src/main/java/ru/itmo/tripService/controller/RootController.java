@@ -27,7 +27,7 @@ public class RootController {
 
         User user = new User(1,"", "123", "123", "123");
         Car car = carClient.findNearestCar(start_lat, start_long);
-        Trip trip = new Trip(null, user, car, TripStatus.WAITING,
+        Trip trip = new Trip(null, user, car, TripStatus.WAITING, null, null,
                 start_lat, start_long, finish_lat, finish_long);
 
         repository.save(trip);

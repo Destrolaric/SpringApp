@@ -8,6 +8,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalTime;
 
 @Data
 @AllArgsConstructor
@@ -37,6 +38,12 @@ public class Trip { // это не все офк, просто затестит�
     @Column(name = "status", nullable = false)
     @NotNull
     private TripStatus status;
+
+    @Column(name = "start_time", nullable = false)
+    private LocalTime startTime;
+
+    @Column(name = "finish_time", nullable = false)
+    private LocalTime finishTime;
 
     @Column(name = "start_lat", nullable = false)
     @NotNull
