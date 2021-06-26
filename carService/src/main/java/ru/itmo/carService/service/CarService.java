@@ -1,6 +1,8 @@
 package ru.itmo.carService.service;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.cdi.Eager;
 import org.springframework.stereotype.Service;
 import ru.itmo.carService.model.Car;
 import ru.itmo.carService.repository.CrudCarRepository;
@@ -10,10 +12,18 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
+@AllArgsConstructor
 public class CarService {
 
-    @Autowired
-    CrudCarRepository repository;
+    private final CrudCarRepository repository;
+
+    public Car save(Car car) {
+        return repository.save(car);
+    }
+
+    public Car getById(int id) {
+        return repository.findById(id).orElseThrow(IllegalArgumentException::new);
+    }
 
     public Car findNearestCar(Double latitude,
                               Double longitude) {
