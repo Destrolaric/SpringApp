@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CarControlMessage {
 
+    private Integer tripId;
     private Integer carId;
 
     private Double latitude;

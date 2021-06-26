@@ -17,8 +17,8 @@ public class CarService {
 
     private final CrudCarRepository repository;
 
-    public void save(Car car) {
-        repository.save(car);
+    public Car save(Car car) {
+        return repository.save(car);
     }
 
     public Car getById(int id) {

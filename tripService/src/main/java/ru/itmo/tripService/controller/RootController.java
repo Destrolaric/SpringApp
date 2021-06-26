@@ -1,5 +1,6 @@
 package ru.itmo.tripService.controller;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
@@ -13,19 +14,23 @@ import ru.itmo.tripService.model.Trip;
 import ru.itmo.tripService.model.TripStatus;
 import ru.itmo.tripService.model.User;
 import ru.itmo.tripService.repository.CrudTripRepository;
+import ru.itmo.tripService.service.TripService;
+
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/trip")
+@AllArgsConstructor
 public class RootController {
 
     @Autowired
-    private CrudTripRepository repository;
+    private final TripService service;
 
     @Autowired
-    private CarFeignClient carClient;
+    private final CarFeignClient carClient;
 
     @Autowired
-    private KafkaTemplate<String, CarControlMessage> kafkaTemplate;
+    private final KafkaTemplate<String, CarControlMessage> kafkaTemplate;
 
     @GetMapping("/pickup")
     public Trip pickUp(@RequestParam Double start_lat,
@@ -38,18 +43,20 @@ public class RootController {
         Trip trip = new Trip(null, user, car, TripStatus.WAITING, null, null,
                 start_lat, start_long, finish_lat, finish_long);
 
-        kafkaTemplate.send("carControl",
-                new CarControlMessage(car.getId(), start_lat, start_long));
+        trip = service.save(trip);
 
-        repository.save(trip);
+        kafkaTemplate.send("carControl",
+                new CarControlMessage(trip.getId(), car.getId(), start_lat, start_long));
+
         return trip;
     }
 
     @PostMapping("/interrupt")
     public void interrupt(@RequestParam Integer id) {
-        Trip trip = repository.getById(id);
+        Trip trip = service.getByIdEager(id);
         trip.setStatus(TripStatus.FINISHED);
-        //TODO: request to carService to change car status
-        repository.save(trip);
+        trip.setFinishTime(LocalDateTime.now());
+        carClient.finish(trip.getCar().getId());
+        service.save(trip);
     }
 }

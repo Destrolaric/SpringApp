@@ -7,11 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CarControlMessage {
+public class TripControlMessage {
 
     private Integer tripId;
     private Integer carId;
-
-    private Double latitude;
-    private Double longitude;
 }
