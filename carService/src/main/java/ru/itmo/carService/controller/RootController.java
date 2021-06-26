@@ -1,5 +1,6 @@
 package ru.itmo.carService.controller;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,10 +11,10 @@ import ru.itmo.carService.service.CarService;
 
 @RestController
 @RequestMapping("/car")
+@AllArgsConstructor
 public class RootController {
 
-    @Autowired
-    CarService service;
+    private final CarService service;
 
     @GetMapping("/findNearest")
     public Car findNearest(@RequestParam Double latitude,
