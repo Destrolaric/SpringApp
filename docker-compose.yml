@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+    carservice:
+        build: ./carService
+
+    eurekaserver:
+        build: ./eurekaServer
+        ports:
+            - 8761:8761
+
+    gatewayclient:
+        build: ./gatewayClient
+        ports:
+            - 8080:8080
+
+    tripservice:
+        build: ./tripService
+
+    userservice:
+        build: ./userService
