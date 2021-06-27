@@ -20,6 +20,7 @@ CREATE TABLE users
 (
     id        INTEGER    PRIMARY KEY DEFAULT nextval('global_seq'),
     name      VARCHAR    NOT NULL,
+    surname   VARCHAR    NOT NULL,
     email     VARCHAR    NOT NULL,
     password  VARCHAR    NOT NULL
 );
@@ -28,11 +29,12 @@ CREATE UNIQUE INDEX users_unique_email_idx ON users(email);
 
 CREATE TABLE cars
 (
-    id         INTEGER    PRIMARY KEY DEFAULT nextval('global_seq'),
-    name       VARCHAR    NOT NULL,
-    status     VARCHAR    NOT NULL,
-    latitude   FLOAT      NOT NULL,
-    longitude  FLOAT      NOT NULL
+    id             INTEGER    PRIMARY KEY DEFAULT nextval('global_seq'),
+    name           VARCHAR    NOT NULL,
+    license_plate  VARCHAR    NOT NULL,
+    status         VARCHAR    NOT NULL,
+    latitude       FLOAT      NOT NULL,
+    longitude      FLOAT      NOT NULL
 );
 
 CREATE TABLE trips
@@ -41,6 +43,8 @@ CREATE TABLE trips
     user_id      INTEGER    NOT NULL,
     car_id       INTEGER    NOT NULL,
     status       VARCHAR    NOT NULL,
+    start_time   TIMESTAMP,
+    finish_time  TIMESTAMP,
     start_lat    FLOAT      NOT NULL,
     start_long   FLOAT      NOT NULL,
     finish_lat   FLOAT      NOT NULL,

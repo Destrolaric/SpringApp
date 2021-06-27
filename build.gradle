@@ -1,7 +1,14 @@
 plugins {
     id 'org.springframework.boot' version '2.5.1'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'com.avast.gradle.docker-compose' version '0.7.1'
     id 'java'
+}
+
+apply plugin: 'docker-compose'
+
+dockerCompose{
+    useComposeFiles = ['docker-compose.yml']
 }
 
 allprojects {
@@ -10,7 +17,7 @@ allprojects {
     apply plugin: 'java'
 
     group = 'ru.itmo'
-    version = '0.0.1-SNAPSHOT'
+    version = '0.0.2'
     sourceCompatibility = '11'
 
     repositories {

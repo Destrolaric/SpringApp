@@ -19,3 +19,8 @@ spring:
           uri: lb://CAR-SERVICE
           predicates:
             - Path=/car/**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eurekaserver:8761/eureka/
