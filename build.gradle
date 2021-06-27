@@ -6,14 +6,22 @@ plugins {
     id 'com.palantir.docker' version '0.22.1'
     id 'com.palantir.docker-run' version '0.22.1'
 }
-
+subprojects {
+    jar {
+        enabled = true
+    }
+}
+jar {
+    enabled = false;
+}
 allprojects {
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'java'
     apply plugin: 'com.palantir.docker'
+    apply plugin: 'com.palantir.docker-run'
     group = 'ru.itmo'
-    version = '0.0.1'
+    version = '0.0.2'
     sourceCompatibility = '11'
 
     repositories {
@@ -52,15 +60,15 @@ allprojects {
     }
     docker {
         name "${project.name.toLowerCase()}:${project.version}"
-        files "$buildDir/libs/${project.name}-${project.version}-plain.jar"
-        buildArgs ([JAR_FILE: "${project.name}-${project.version}-plain.jar"])
+        files "$buildDir/libs/${project.name}-${project.version}.jar"
+        buildArgs ([JAR_FILE: "${project.name}-${project.version}.jar"])
     }
     dockerRun{
         name "${project.name.toLowerCase()}"
         image "${project.name.toLowerCase()}:${project.version}"
         ports '8080:8080'
         clean true
-        daemonize true
+        daemonize false
     }
     dependencyManagement {
         imports {
