@@ -3,11 +3,14 @@ package ru.itmo.tripService.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Data
 @AllArgsConstructor
@@ -25,18 +28,26 @@ public class Trip { // это не все офк, просто затестит�
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     @NotNull
+    @ToString.Exclude
     private User user;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "car_id", nullable = false)
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     @NotNull
+    @ToString.Exclude
     private Car car;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     @NotNull
     private TripStatus status;
+
+    @Column(name = "start_time", nullable = false)
+    private LocalDateTime startTime;
+
+    @Column(name = "finish_time", nullable = false)
+    private LocalDateTime finishTime;
 
     @Column(name = "start_lat", nullable = false)
     @NotNull

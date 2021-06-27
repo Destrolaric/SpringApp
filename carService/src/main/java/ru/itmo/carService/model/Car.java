@@ -27,9 +27,11 @@ public class Car {
     @Column(name = "license_plate", nullable = false)
     @NotBlank
     private String license_plate;
+
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    @NotBlank
-    private String status;
+    @NotNull
+    private CarStatus status;
 
     @Column(name = "latitude", nullable = false)
     @NotNull
