@@ -1,19 +1,14 @@
 package ru.itmo.tripService.controller;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.support.SendResult;
-import org.springframework.util.concurrent.ListenableFuture;
-import org.springframework.util.concurrent.ListenableFutureCallback;
 import org.springframework.web.bind.annotation.*;
 import ru.itmo.tripService.client.CarFeignClient;
-import ru.itmo.tripService.kafka.CarControlMessage;
+import ru.itmo.tripService.kafka.model.CarControlMessage;
 import ru.itmo.tripService.model.Car;
 import ru.itmo.tripService.model.Trip;
 import ru.itmo.tripService.model.TripStatus;
 import ru.itmo.tripService.model.User;
-import ru.itmo.tripService.repository.CrudTripRepository;
 import ru.itmo.tripService.service.TripService;
 
 import java.time.LocalDateTime;
@@ -23,13 +18,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class RootController {
 
-    @Autowired
     private final TripService service;
 
-    @Autowired
     private final CarFeignClient carClient;
 
-    @Autowired
     private final KafkaTemplate<String, CarControlMessage> kafkaTemplate;
 
     @GetMapping("/pickup")

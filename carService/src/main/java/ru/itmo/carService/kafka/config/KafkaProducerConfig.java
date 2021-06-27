@@ -1,4 +1,4 @@
-package ru.itmo.tripService.kafka;
+package ru.itmo.carService.kafka.config;
 
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -9,6 +9,7 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
+import ru.itmo.carService.kafka.model.TripControlMessage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,11 +17,11 @@ import java.util.Map;
 @Configuration
 public class KafkaProducerConfig {
 
-    @Value(value = "${kafka.bootstrapAddress}")
+    @Value("${kafka.bootstrapAddress}")
     private String bootstrapAddress;
 
     @Bean
-    public ProducerFactory<String, CarControlMessage> producerFactory() {
+    public ProducerFactory<String, TripControlMessage> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(
                 ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
@@ -35,7 +36,7 @@ public class KafkaProducerConfig {
     }
 
     @Bean
-    public KafkaTemplate<String, CarControlMessage> kafkaTemplate() {
+    public KafkaTemplate<String, TripControlMessage> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 }
