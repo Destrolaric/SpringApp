@@ -1,25 +1,21 @@
-
 plugins {
     id 'org.springframework.boot' version '2.5.1'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'com.avast.gradle.docker-compose' version '0.7.1'
     id 'java'
-    id 'com.palantir.docker' version '0.22.1'
-    id 'com.palantir.docker-run' version '0.22.1'
 }
-subprojects {
-    jar {
-        enabled = true
-    }
+
+apply plugin: 'docker-compose'
+
+dockerCompose{
+    useComposeFiles = ['docker-compose.yml']
 }
-jar {
-    enabled = false;
-}
+
 allprojects {
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'java'
-    apply plugin: 'com.palantir.docker'
-    apply plugin: 'com.palantir.docker-run'
+
     group = 'ru.itmo'
     version = '0.0.2'
     sourceCompatibility = '11'
@@ -58,18 +54,7 @@ allprojects {
     jar {
         enabled = true
     }
-    docker {
-        name "${project.name.toLowerCase()}:${project.version}"
-        files "$buildDir/libs/${project.name}-${project.version}.jar"
-        buildArgs ([JAR_FILE: "${project.name}-${project.version}.jar"])
-    }
-    dockerRun{
-        name "${project.name.toLowerCase()}"
-        image "${project.name.toLowerCase()}:${project.version}"
-        ports '8080:8080'
-        clean true
-        daemonize false
-    }
+
     dependencyManagement {
         imports {
             mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"

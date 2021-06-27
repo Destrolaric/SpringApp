@@ -1,4 +1,3 @@
 FROM openjdk:12-jdk-alpine
-ARG JAR_FILE
-COPY ${JAR_FILE} app.jar
+COPY build/libs/tripService-?.?.?.jar app.jar
 ENTRYPOINT ["java", "-jar", "app.jar"]
