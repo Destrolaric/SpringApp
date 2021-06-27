@@ -1,4 +1,4 @@
-package ru.itmo.carService.kafka;
+package ru.itmo.tripService.kafka.config;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -10,6 +10,7 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
+import ru.itmo.tripService.kafka.model.TripControlMessage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,10 +19,10 @@ import java.util.Map;
 @Configuration
 public class KafkaConsumerConfig {
 
-    @Value(value = "${kafka.bootstrapAddress}")
+    @Value("${kafka.bootstrapAddress}")
     private String bootstrapAddress;
 
-    public ConsumerFactory<String, CarControlMessage> consumerFactory(String groupId) {
+    public ConsumerFactory<String, TripControlMessage> consumerFactory(String groupId) {
         Map<String, Object> props = new HashMap<>();
         props.put(
                 ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
@@ -30,7 +31,7 @@ public class KafkaConsumerConfig {
                 ConsumerConfig.GROUP_ID_CONFIG,
                 groupId);
 
-        JsonDeserializer<CarControlMessage> deserializer = new JsonDeserializer<>(CarControlMessage.class);
+        JsonDeserializer<TripControlMessage> deserializer = new JsonDeserializer<>(TripControlMessage.class);
         deserializer.addTrustedPackages("*");
         deserializer.ignoreTypeHeaders();
 
@@ -38,12 +39,12 @@ public class KafkaConsumerConfig {
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, CarControlMessage>
-    carsKafkaListenerContainerFactory() {
+    public ConcurrentKafkaListenerContainerFactory<String, TripControlMessage>
+    tripsKafkaListenerContainerFactory() {
 
-        ConcurrentKafkaListenerContainerFactory<String, CarControlMessage> factory =
+        ConcurrentKafkaListenerContainerFactory<String, TripControlMessage> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(consumerFactory("cars"));
+        factory.setConsumerFactory(consumerFactory("trips"));
         return factory;
     }
 

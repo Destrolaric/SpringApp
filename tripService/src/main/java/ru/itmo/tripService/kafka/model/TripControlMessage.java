@@ -1,4 +1,4 @@
-package ru.itmo.tripService.kafka;
+package ru.itmo.tripService.kafka.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

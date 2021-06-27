@@ -1,23 +1,27 @@
 package ru.itmo.carService.kafka;
 
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
+import ru.itmo.carService.kafka.model.CarControlMessage;
+import ru.itmo.carService.kafka.model.TripControlMessage;
 import ru.itmo.carService.model.Car;
-import ru.itmo.carService.repository.CrudCarRepository;
+import ru.itmo.carService.model.CarStatus;
 import ru.itmo.carService.service.CarService;
 
 @Component
-@AllArgsConstructor
 public class KafkaConsumer {
 
-    //TODO: replace it to config
-    final private int tripIters = 5;
-    final private int tripInterval = 2; // in seconds
+    @Value("${travelling.steps}")
+    private Integer tripSteps;
 
-    private final CarService service;
+    @Value("${travelling.interval}")
+    private Integer tripInterval;
+
+    @Autowired
+    private CarService service;
 
     @Autowired
     private KafkaTemplate<String, TripControlMessage> kafkaTemplate;
@@ -28,19 +32,19 @@ public class KafkaConsumer {
         System.out.println(message);
 
         Car car = service.getById(message.getCarId());
-        car.setStatus("BUSY");
+        car.setStatus(CarStatus.BUSY);
         service.save(car);
         new Thread(() -> goTo(message, car.getLatitude(), car.getLongitude())).start();
     }
 
     private void goTo(CarControlMessage message,
                       Double start_lat, Double start_long) {
-        Double lat_step = (message.getLatitude() - start_lat) / tripIters;
-        Double long_step = (message.getLongitude() - start_long) / tripIters;
-        for (int i = 0; i < tripIters; ++i) {
+        Double lat_step = (message.getLatitude() - start_lat) / tripSteps;
+        Double long_step = (message.getLongitude() - start_long) / tripSteps;
+        for (int i = 0; i < tripSteps; ++i) {
             Car car = service.getById(message.getCarId());
 
-            if (car.getStatus().equals("BUSY")) {
+            if (car.getStatus() == CarStatus.BUSY) {
                 car.setLatitude(car.getLatitude() + lat_step);
                 car.setLongitude(car.getLongitude() + long_step);
                 service.save(car);

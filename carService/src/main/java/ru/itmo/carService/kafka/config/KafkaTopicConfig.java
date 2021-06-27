@@ -1,4 +1,4 @@
-package ru.itmo.tripService.kafka;
+package ru.itmo.carService.kafka.config;
 
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;
@@ -13,7 +13,7 @@ import java.util.Map;
 @Configuration
 public class KafkaTopicConfig {
 
-    @Value(value = "${kafka.bootstrapAddress}")
+    @Value("${kafka.bootstrapAddress}")
     private String bootstrapAddress;
 
     @Bean
@@ -25,6 +25,6 @@ public class KafkaTopicConfig {
 
     @Bean
     public NewTopic carControl() {
-        return new NewTopic("carControl", 1, (short) 1);
+        return new NewTopic("tripControl", 1, (short) 1);
     }
 }

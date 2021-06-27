@@ -1,10 +1,9 @@
 package ru.itmo.carService.service;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.cdi.Eager;
 import org.springframework.stereotype.Service;
 import ru.itmo.carService.model.Car;
+import ru.itmo.carService.model.CarStatus;
 import ru.itmo.carService.repository.CrudCarRepository;
 
 import java.util.Comparator;
@@ -28,7 +27,7 @@ public class CarService {
     public Car findNearestCar(Double latitude,
                               Double longitude) {
 
-        List<Car> vacantCars = repository.findAllByStatus("VACANT");
+        List<Car> vacantCars = repository.findAllByStatus(CarStatus.VACANT);
         return vacantCars
                 .stream()
                 .min(Comparator.comparing(car -> getDistance(latitude, longitude, car)))
