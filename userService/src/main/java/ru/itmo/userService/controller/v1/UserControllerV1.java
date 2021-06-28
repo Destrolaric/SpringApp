@@ -1,9 +1,10 @@
-package ru.itmo.userService.controller;
+package ru.itmo.userService.controller.v1;
 
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import ru.itmo.userService.dto.UserLoginDTO;
+import ru.itmo.userService.dto.UserPasswordUpdateDTO;
 import ru.itmo.userService.dto.UserRegistrationDTO;
 import ru.itmo.userService.model.User;
 import ru.itmo.userService.service.UserService;
@@ -24,7 +27,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/user")
 @AllArgsConstructor
-public class UserController {
+public class UserControllerV1 {
 
     private final UserService userService;
     private final ModelMapper modelMapper;
@@ -42,7 +45,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody @Valid UserRegistrationDTO userRegistrationDTO) {
+    public String login(@RequestBody @Valid UserLoginDTO userLoginDTO) {
         return ""; //TODO
     }
 
@@ -56,8 +59,12 @@ public class UserController {
     }
 
     @PostMapping("/password-update")
-    public String passwordUpdate(@RequestParam String new_password) {
-        return new_password; //TODO
+    public void passwordUpdate(@RequestBody @Valid UserPasswordUpdateDTO userPasswordUpdateDTO) {
+        User user = userService.getByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        if (!userService.checkPassword(user, userPasswordUpdateDTO.getOldPassword())) {
+            throw new RuntimeException("Wrong password");
+        }
+        userService.updatePassword(user, userPasswordUpdateDTO.getNewPassword());
     }
 
     private UserRegistrationDTO convertToDto(User user) {
