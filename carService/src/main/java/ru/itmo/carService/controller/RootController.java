@@ -14,13 +14,13 @@ public class RootController {
     private final CarService service;
 
     @GetMapping("/findNearest")
-    public Car findNearest(@RequestParam Double latitude,
-                           @RequestParam Double longitude) {
-        return service.findNearestCar(latitude, longitude);
+    public Long findNearest(@RequestParam Double latitude,
+                            @RequestParam Double longitude) {
+        return service.findNearestCar(latitude, longitude).getId();
     }
 
     @PostMapping("/finishTrip")
-    public void finish(@RequestParam Integer carId) {
+    public void finish(@RequestParam Long carId) {
         Car car = service.getById(carId);
         car.setStatus(CarStatus.VACANT);
         service.save(car);

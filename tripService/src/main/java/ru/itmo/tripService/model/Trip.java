@@ -3,40 +3,30 @@ package ru.itmo.tripService.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "trips")
-public class Trip { // это не все офк, просто затестить
+public class Trip {
 
     @Id
     @SequenceGenerator(name = "global_seq", sequenceName = "global_seq", allocationSize = 1, initialValue = 100)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
-    private Integer id;
+    private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.NO_ACTION)
+    @Column(name = "user_id", nullable = false)
     @NotNull
-    @ToString.Exclude
-    private User user;
+    private Long userId;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "car_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.NO_ACTION)
+    @Column(name = "car_id", nullable = false)
     @NotNull
-    @ToString.Exclude
-    private Car car;
+    private Long carId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)

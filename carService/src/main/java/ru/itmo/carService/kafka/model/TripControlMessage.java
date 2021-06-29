@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TripControlMessage {
 
-    private Integer tripId;
-    private Integer carId;
+    private Long tripId;
+    private Long carId;
 }
