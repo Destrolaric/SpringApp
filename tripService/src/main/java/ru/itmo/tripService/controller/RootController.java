@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 import ru.itmo.tripService.client.CarFeignClient;
+import ru.itmo.tripService.client.UserFeignClient;
 import ru.itmo.tripService.kafka.model.CarControlMessage;
 import ru.itmo.tripService.model.Car;
 import ru.itmo.tripService.model.Trip;
@@ -21,6 +22,7 @@ public class RootController {
     private final TripService service;
 
     private final CarFeignClient carClient;
+    private final UserFeignClient userClient;
 
     private final KafkaTemplate<String, CarControlMessage> kafkaTemplate;
 
@@ -28,9 +30,11 @@ public class RootController {
     public Trip pickUp(@RequestParam Double start_lat,
                        @RequestParam Double start_long,
                        @RequestParam Double finish_lat,
-                       @RequestParam Double finish_long) {
+                       @RequestParam Double finish_long,
+                       @RequestParam String token) {
 
-        User user = new User(1,"123", "123", "123", "123");
+        User user = new User(userClient.approveToken(token),
+                "123", "123", "123", "123");
         Car car = carClient.findNearestCar(start_lat, start_long);
         Trip trip = new Trip(null, user, car, TripStatus.WAITING, null, null,
                 start_lat, start_long, finish_lat, finish_long);
@@ -44,8 +48,15 @@ public class RootController {
     }
 
     @PostMapping("/interrupt")
-    public void interrupt(@RequestParam Integer id) {
+    public void interrupt(@RequestParam Integer id,
+                          @RequestParam String token) {
         Trip trip = service.getByIdEager(id);
+        Long userId = userClient.approveToken(token);
+
+        if (!trip.getUser().getId().equals(userId)) {
+            throw new IllegalArgumentException("Unauthorized");
+        }
+
         trip.setStatus(TripStatus.FINISHED);
         trip.setFinishTime(LocalDateTime.now());
         carClient.finish(trip.getCar().getId());
