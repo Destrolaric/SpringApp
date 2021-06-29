@@ -5,30 +5,32 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Collection;
 
 @Data
 @Entity
 @NoArgsConstructor
+@Table(name = "users")
 public class User implements UserDetails {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "global_seq", sequenceName = "global_seq", allocationSize = 1, initialValue = 100)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
     private Long Id;
 
     private String username;
     private String password;
     private String email;
-    private String phoneNumber;
+    private String phone;
 
+    @Enumerated(EnumType.STRING)
     private Role role;
     private boolean enabled;
+
+    private String token;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

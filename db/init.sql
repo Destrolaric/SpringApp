@@ -19,12 +19,17 @@ CREATE TYPE trip_status AS ENUM ('WAITING', 'TRAVELLING', 'FINISHED');
 CREATE TABLE users
 (
     id        INTEGER    PRIMARY KEY DEFAULT nextval('global_seq'),
-    name      VARCHAR    NOT NULL,
-    surname   VARCHAR    NOT NULL,
+    username  VARCHAR    NOT NULL,
+    password  VARCHAR    NOT NULL,
     email     VARCHAR    NOT NULL,
-    password  VARCHAR    NOT NULL
+    phone     VARCHAR    NOT NULL,
+    role      VARCHAR    NOT NULL,
+    enabled   BOOLEAN    NOT NULL,
+    token     VARCHAR
+
 );
 CREATE UNIQUE INDEX users_unique_email_idx ON users(email);
+CREATE UNIQUE INDEX users_unique_username_idx ON users(username);
 
 
 CREATE TABLE cars

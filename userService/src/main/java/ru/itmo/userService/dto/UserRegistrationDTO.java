@@ -22,6 +22,7 @@ public class UserRegistrationDTO {
 
     @NotNull
     @NotEmpty
-    private String phoneNumber;
+    private String phone;
 
+    private String token;
 }

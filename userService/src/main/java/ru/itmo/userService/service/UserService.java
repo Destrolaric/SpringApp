@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.itmo.userService.model.Role;
-import ru.itmo.userService.repository.UserRepository;
 import ru.itmo.userService.model.User;
+import ru.itmo.userService.repository.UserRepository;
 
 import java.util.List;
 
@@ -31,6 +31,10 @@ public class UserService {
 
     public User getByUsername(String username) {
         return userRepo.findByUsername(username);
+    }
+
+    public User getByToken(String token) {
+        return userRepo.getByToken(token).orElseThrow(IllegalArgumentException::new);
     }
 
     public List<User> getUsers() {
