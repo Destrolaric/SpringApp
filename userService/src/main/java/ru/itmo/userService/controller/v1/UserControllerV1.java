@@ -11,11 +11,11 @@ import ru.itmo.userService.dto.UserLoginDTO;
 import ru.itmo.userService.dto.UserPasswordUpdateDTO;
 import ru.itmo.userService.dto.UserRegistrationDTO;
 import ru.itmo.userService.model.User;
+import ru.itmo.userService.service.TokenService;
 import ru.itmo.userService.service.UserService;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Random;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -23,6 +23,7 @@ import java.util.Random;
 public class UserControllerV1 {
 
     private final UserService userService;
+    private final TokenService tokenService;
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
 
@@ -47,8 +48,9 @@ public class UserControllerV1 {
     @ResponseBody
     public UserRegistrationDTO register(@RequestBody @Valid UserRegistrationDTO userRegistrationDTO) {
         User user = convertToEntity(userRegistrationDTO);
-        user.setToken("token_" + new Random().nextInt(1000));
         User userCreated = userService.createUser(user);
+        userCreated.setToken(tokenService.getToken(
+                user.getUsername(), user.getPassword()));
         return convertToDto(userCreated);
     }
 
@@ -63,8 +65,7 @@ public class UserControllerV1 {
 
     @GetMapping("/approve-token")
     public Long approveToken(@RequestParam String token) {
-        User user = userService.getByToken(token);
-        return user.getId();
+        return tokenService.getId(token);
     }
 
     private UserRegistrationDTO convertToDto(User user) {
