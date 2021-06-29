@@ -26,15 +26,11 @@ public class UserService {
     }
 
     public User getById(Long id) {
-        return userRepo.findById(id).get();
+        return userRepo.findById(id).orElseThrow(IllegalArgumentException::new);
     }
 
     public User getByUsername(String username) {
         return userRepo.findByUsername(username);
-    }
-
-    public User getByToken(String token) {
-        return userRepo.getByToken(token).orElseThrow(IllegalArgumentException::new);
     }
 
     public List<User> getUsers() {

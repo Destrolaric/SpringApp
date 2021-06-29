@@ -40,7 +40,7 @@ public class UserControllerV1 {
 
     @PostMapping("/login")
     public String login(@RequestBody @Valid UserLoginDTO userLoginDTO) {
-        return ""; //TODO
+        return tokenService.getToken(userLoginDTO.getUsername(), userLoginDTO.getPassword());
     }
 
     @PostMapping("/register")
@@ -49,9 +49,9 @@ public class UserControllerV1 {
     public UserRegistrationDTO register(@RequestBody @Valid UserRegistrationDTO userRegistrationDTO) {
         User user = convertToEntity(userRegistrationDTO);
         User userCreated = userService.createUser(user);
-        userCreated.setToken(tokenService.getToken(
-                user.getUsername(), user.getPassword()));
-        return convertToDto(userCreated);
+        UserRegistrationDTO userDTO = convertToDto(userCreated);
+        userDTO.setToken(tokenService.getToken(user.getUsername(), user.getPassword()));
+        return userDTO;
     }
 
     @PostMapping("/password-update")

@@ -24,8 +24,7 @@ CREATE TABLE users
     email     VARCHAR    NOT NULL,
     phone     VARCHAR    NOT NULL,
     role      VARCHAR    NOT NULL,
-    enabled   BOOLEAN    NOT NULL,
-    token     VARCHAR
+    enabled   BOOLEAN    NOT NULL
 
 );
 CREATE UNIQUE INDEX users_unique_email_idx ON users(email);

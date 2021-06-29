@@ -5,11 +5,12 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.DefaultClaims;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.itmo.userService.model.User;
 
-import java.time.LocalDateTime;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,12 +20,14 @@ public class TokenService {
 
     private final UserService service;
 
+    private final PasswordEncoder passwordEncoder;
+
     private static final String key = "taxi"; //idk what it have to be
 
     public String getToken(String username, String password) {
 
         User user = service.getByUsername(username);
-        if (!password.equals(user.getPassword())) {
+        if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new IllegalArgumentException("Unauthorized");
         }
 
@@ -32,7 +35,7 @@ public class TokenService {
         tokenData.put("username", username);
         tokenData.put("user_id", user.getId());
         tokenData.put("role", user.getRole());
-        tokenData.put("creation_time", LocalDateTime.now());
+        tokenData.put("creation_time", new Date().getTime());
 
         JwtBuilder tokenBuilder = Jwts.builder();
         tokenBuilder.setClaims(tokenData);
