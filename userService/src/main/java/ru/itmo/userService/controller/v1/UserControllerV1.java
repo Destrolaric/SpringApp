@@ -64,8 +64,8 @@ public class UserControllerV1 {
     }
 
     @GetMapping("/approve-token")
-    public Long approveToken(@RequestParam String token) {
-        return tokenService.getId(token);
+    public Long approveToken(@RequestHeader("Authorization") String token) {
+        return tokenService.getId(token.replace("Bearer", ""));
     }
 
     private UserRegistrationDTO convertToDto(User user) {

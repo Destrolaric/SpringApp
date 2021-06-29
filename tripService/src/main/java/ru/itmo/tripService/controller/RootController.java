@@ -31,7 +31,7 @@ public class RootController {
                        @RequestParam Double start_long,
                        @RequestParam Double finish_lat,
                        @RequestParam Double finish_long,
-                       @RequestParam String token) {
+                       @RequestHeader("Authorization") String token) {
 
         User user = new User(userClient.approveToken(token),
                 "123", "123", "123", "123");
@@ -49,7 +49,7 @@ public class RootController {
 
     @PostMapping("/interrupt")
     public void interrupt(@RequestParam Integer id,
-                          @RequestParam String token) {
+                          @RequestHeader("Authorization") String token) {
         Trip trip = service.getByIdEager(id);
         Long userId = userClient.approveToken(token);
 
