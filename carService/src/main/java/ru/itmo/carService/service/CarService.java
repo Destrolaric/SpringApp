@@ -20,7 +20,7 @@ public class CarService {
         return repository.save(car);
     }
 
-    public Car getById(int id) {
+    public Car getById(long id) {
         return repository.findById(id).orElseThrow(IllegalArgumentException::new);
     }
 

@@ -6,10 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.itmo.tripService.client.CarFeignClient;
 import ru.itmo.tripService.client.UserFeignClient;
 import ru.itmo.tripService.kafka.model.CarControlMessage;
-import ru.itmo.tripService.model.Car;
 import ru.itmo.tripService.model.Trip;
 import ru.itmo.tripService.model.TripStatus;
-import ru.itmo.tripService.model.User;
 import ru.itmo.tripService.service.TripService;
 
 import java.time.LocalDateTime;
@@ -33,33 +31,32 @@ public class RootController {
                        @RequestParam Double finish_long,
                        @RequestHeader("Authorization") String token) {
 
-        User user = new User(userClient.approveToken(token),
-                "123", "123", "123", "123");
-        Car car = carClient.findNearestCar(start_lat, start_long);
-        Trip trip = new Trip(null, user, car, TripStatus.WAITING, null, null,
+        Long userId = userClient.approveToken(token);
+        Long carId = carClient.findNearestCar(start_lat, start_long);
+        Trip trip = new Trip(null, userId, carId, TripStatus.WAITING, null, null,
                 start_lat, start_long, finish_lat, finish_long);
 
         trip = service.save(trip);
 
         kafkaTemplate.send("carControl",
-                new CarControlMessage(trip.getId(), car.getId(), start_lat, start_long));
+                new CarControlMessage(trip.getId(), carId, start_lat, start_long));
 
         return trip;
     }
 
     @PostMapping("/interrupt")
-    public void interrupt(@RequestParam Integer id,
+    public void interrupt(@RequestParam Long id,
                           @RequestHeader("Authorization") String token) {
-        Trip trip = service.getByIdEager(id);
+        Trip trip = service.getById(id);
         Long userId = userClient.approveToken(token);
 
-        if (!trip.getUser().getId().equals(userId)) {
+        if (!trip.getUserId().equals(userId)) {
             throw new IllegalArgumentException("Unauthorized");
         }
 
         trip.setStatus(TripStatus.FINISHED);
         trip.setFinishTime(LocalDateTime.now());
-        carClient.finish(trip.getCar().getId());
+        carClient.finish(trip.getCarId());
         service.save(trip);
     }
 }
