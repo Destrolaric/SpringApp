@@ -15,12 +15,8 @@ public class TripService {
         return repository.save(trip);
     }
 
-    public Trip getById(int id) {
+    public Trip getById(long id) {
         return repository.findById(id).orElseThrow(IllegalArgumentException::new);
-    }
-
-    public Trip getByIdEager(int id) {
-        return repository.getByIdEager(id).orElseThrow(IllegalArgumentException::new);
     }
 
 }

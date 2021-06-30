@@ -8,7 +8,7 @@ import ru.itmo.carService.model.CarStatus;
 import java.util.List;
 
 @Repository
-public interface CrudCarRepository extends JpaRepository<Car, Integer> {
+public interface CrudCarRepository extends JpaRepository<Car, Long> {
 
     List<Car> findAllByStatus(CarStatus status);
 }

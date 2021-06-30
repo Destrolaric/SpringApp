@@ -5,15 +5,12 @@ spring:
   application:
     name: trip-service
   datasource:
-    url: jdbc:postgresql://localhost:5432/taxi
+    url: jdbc:postgresql://db:5432/taxi
     driverClassName: org.postgresql.Driver
     username: user
     password: password
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQL10Dialect
-  h2:
-    console:
-      enabled: true
 
 eureka:
   client:
@@ -21,4 +18,4 @@ eureka:
       defaultZone: http://eurekaserver:8761/eureka/
 
 kafka:
-  bootstrapAddress: localhost:9092
+  bootstrapAddress: kafka:9092
